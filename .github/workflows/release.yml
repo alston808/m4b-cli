@@ -1,0 +1,61 @@
+name: Release m4b-cli
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    name: Build Packages and Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby (for fpm)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install fpm
+        run: gem install fpm
+
+      - name: Build Debian Package (.deb)
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          fpm -s dir -t deb \
+            -n "m4b" \
+            -v "$VERSION" \
+            --architecture all \
+            --depends "python3" \
+            --depends "ffmpeg" \
+            --depends "podman" \
+            --description "Automated audiobook merging and metadata tagging" \
+            m4b=/usr/bin/m4b
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            m4b
+            *.deb
+          generate_release_notes: true
+
+  bump-homebrew:
+    name: Update Homebrew Tap
+    needs: build-and-release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Bump Homebrew formula
+        uses: dawidd6/action-homebrew-bump-formula@v3
+        with:
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          tap: alston808/homebrew-m4b
+          formula: m4b
+          tag: ${{ github.ref_name }}
+          force: true
