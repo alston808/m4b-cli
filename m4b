@@ -117,7 +117,7 @@ def process_audiobook(target_dir, output_dir):
         "podman", "run", "-it", "--rm",
         "-v", f"{os.path.abspath(target_dir)}:/mnt:Z",
         "--userns=keep-id",
-        "sandreas/tone", "tag", "/mnt/audiobook_final.m4b",
+        "sandreas/tone:v0.2.5", "tag", "/mnt/audiobook_final.m4b",
         f"--meta-title={title}",
         f"--meta-artist={author}",
         f"--meta-description={description}"
