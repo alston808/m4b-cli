@@ -124,7 +124,7 @@ def process_audiobook(target_dir, output_dir):
     ]
 
     if cover_in_container:
-        tone_cmd.append(f"--cover={cover_in_container}")
+        tone_cmd.append(f"--meta-cover-file={cover_in_container}")
     if narrator:
         tone_cmd.append(f"--meta-narrator={narrator}")
 
