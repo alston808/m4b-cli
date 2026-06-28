@@ -31,13 +31,13 @@ Designed to operate securely and efficiently, this script acts as a bridge for w
 The utility coordinates a multi-stage pipeline to transform raw audio into a finished audiobook:
 1. **Metadata Parsing:** Extracts titles, authors, and narrators from `metadata.json` and calculates absolute chapter timestamps based on the audio spine.
 2. **Resource Resolution:** Locates or downloads the necessary cover art.
-3. **Audio Merging:** Launches a Podman container running `sandreas/m4b-tool` to concatenate the source files into a single `.m4b` file using the detected source bitrate.
-4. **Metadata Tagging:** Launches a second Podman container running `sandreas/tone` to inject high-fidelity metadata and the cover image directly into the container.
+3. **Audio Merging:** Launches a Docker container running `sandreas/m4b-tool` to concatenate the source files into a single `.m4b` file using the detected source bitrate.
+4. **Metadata Tagging:** Launches a second Docker container running `sandreas/tone` to inject high-fidelity metadata and the cover image directly into the container.
 
 ## Prerequisites
 This script relies entirely on standard Python 3 libraries. However, you must have the following system-level tools installed:
 * **Python 3.12+**
-* **Podman** (Required for secure, rootless container processing)
+* **Docker** (Required for containerized audio processing)
 * **FFmpeg** (Requires `ffprobe` in your system PATH)
 
 ## Installation
@@ -77,9 +77,9 @@ m4b ~/Downloads/book.zip -o ~/Media/Audiobooks/
 ```
 
 ## Troubleshooting
-* **Podman Permission Errors:** Ensure your user has permissions for rootless Podman. You may need to configure `subuid` and `subgid` if you encounter volume mounting issues.
+* **Docker Not Found:** Ensure Docker is installed and running. On macOS, [OrbStack](https://orbstack.dev) or Docker Desktop are recommended.
 * **`ffprobe` Not Found:** Ensure FFmpeg is installed and `ffprobe` is accessible in your system's PATH.
-* **M4B Generation Fails:** Check your Podman logs. Failure is often due to corrupted source stems or insufficient temporary disk space during the merge process.
+* **M4B Generation Fails:** Check your Docker logs. Failure is often due to corrupted source stems or insufficient temporary disk space during the merge process.
 
 ## Acknowledgements
 * **[m4b-tool by sandreas](https://github.com/sandreas/m4b-tool):** For audio concatenation and FDK AAC encoding.

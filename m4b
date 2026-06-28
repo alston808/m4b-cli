@@ -120,9 +120,8 @@ def process_audiobook(target_dir, output_dir):
 
     # 4. Audio Merge & Compression via m4b-tool
     m4b_cmd = [
-        "podman", "run", "-it", "--rm",
-        "-v", f"{os.path.abspath(target_dir)}:/mnt:Z",
-        "--userns=keep-id",
+        "docker", "run", "--rm",
+        "-v", f"{os.path.abspath(target_dir)}:/mnt",
         "sandreas/m4b-tool", "merge", "/mnt",
         "--output-file=/mnt/audiobook_final.m4b",
         f"--audio-bitrate={bitrate}",
@@ -135,9 +134,8 @@ def process_audiobook(target_dir, output_dir):
 
     # 5. Precision Metadata Tagging via Tone
     tone_cmd = [
-        "podman", "run", "-it", "--rm",
-        "-v", f"{os.path.abspath(target_dir)}:/mnt:Z",
-        "--userns=keep-id",
+        "docker", "run", "--rm",
+        "-v", f"{os.path.abspath(target_dir)}:/mnt",
         "sandreas/tone:v0.2.5", "tag", "/mnt/audiobook_final.m4b",
         f"--meta-title={title}",
         f"--meta-artist={author}",
@@ -159,7 +157,7 @@ def process_audiobook(target_dir, output_dir):
         print(f"\n--- Success! ---")
         print(f"Output saved to: {final_output_path}")
     else:
-        print("\n--- Error: M4B generation failed. Check Podman logs. ---")
+        print("\n--- Error: M4B generation failed. Check Docker logs. ---")
 
 def main():
     parser = argparse.ArgumentParser(description="Automated M4B builder from raw directories or LibbyRip ZIP exports.")

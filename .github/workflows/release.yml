@@ -37,7 +37,7 @@ jobs:
             --architecture all \
             --depends "python3" \
             --depends "ffmpeg" \
-            --depends "podman" \
+            --depends "docker" \
             --description "Automated audiobook merging and metadata tagging" \
             m4b=/usr/bin/m4b
 
