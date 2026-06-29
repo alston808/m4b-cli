@@ -57,6 +57,8 @@ jobs:
     steps:
       - name: Bump Homebrew formula
         uses: dawidd6/action-homebrew-bump-formula@v3
+        env:
+          HOMEBREW_NO_REQUIRE_TAP_TRUST: "1"
         with:
           token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           tap: alston808/homebrew-m4b
