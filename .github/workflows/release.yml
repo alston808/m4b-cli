@@ -61,7 +61,7 @@ jobs:
           HOMEBREW_NO_REQUIRE_TAP_TRUST: "1"
         with:
           token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          tap: alston808/homebrew-m4b
+          tap: alston808/homebrew-alston
           formula: m4b
           tag: ${{ github.ref_name }}
           force: true

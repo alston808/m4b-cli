@@ -44,7 +44,7 @@ This script relies entirely on standard Python 3 libraries. However, you must ha
 
 ### macOS (Homebrew)
 ```bash
-brew tap alston808/m4b
+brew tap alston808/alston
 brew install m4b
 ```
 
